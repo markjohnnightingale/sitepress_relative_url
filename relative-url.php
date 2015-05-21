@@ -1,15 +1,14 @@
 <?php
 /*
-Plugin Name: Relative URL
-Plugin URI: http://sparanoid.com/work/relative-url/
-Description: Relative URL applies wp_make_link_relative function to links (posts, categories, pages and etc.) to convert them to relative URLs. Useful for developers when debugging local WordPress instance on a mobile device (iPad. iPhone, etc.).
-Version: 0.0.11
-Author: Tunghsiao Liu
-Author URI: http://sparanoid.com/
-Author Email: t@sparanoid.com
+Plugin Name: Sitepress Relative URL
+Description: Relative URL applies wp_make_link_relative function to links (posts, categories, pages and etc.) to convert them to relative URLs. Useful for developers when debugging local WordPress instance on a mobile device (iPad. iPhone, etc.). This fork is to make the plugin compatible with WPML.
+Version: 0.1
+Author: Mark Nightingale
+Author URI: http://marknightingale.net/
+Author Email: hello@marknightingale.net
 License: GPLv2 or later
 
-  Copyright 2015 Tunghsiao Liu, aka. Sparanoid (t@sparanoid.com)
+  Copyright 2015 Mark Nightingale (hello@marknightingale.net)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -41,16 +40,16 @@ License: GPLv2 or later
   function relative_url() {
     $filters = array(
       'bloginfo_url',
-      'the_permalink',
+      //'the_permalink',
       'wp_list_pages',
       'wp_list_categories',
       'the_content_more_link',
       'the_tags',
       'the_author_posts_link',
-      'post_link',       // Normal post link
-      'post_type_link',  // Custom post type link
-      'page_link',       // Page link
-      'attachment_link', // Attachment link
+      //'post_link',       // Normal post link
+      //'post_type_link',  // Custom post type link
+      //'page_link',       // Page link
+      //'attachment_link', // Attachment link
       'get_shortlink',   // Shortlink
       'post_type_archive_link',    // Post type archive link
       'get_pagenum_link',          // Paginated link
@@ -92,22 +91,44 @@ License: GPLv2 or later
       'get_locale_stylesheet_uri',
       'script_loader_src', // plugin scripts url
       'style_loader_src', // plugin styles url
-      'get_theme_root_uri'
+      'get_theme_root_uri',
       // 'home_url'
+
+      // Plugin filters
+      'bwp_minify_get_src'
+      
     );
 
-    // Thanks to https://wordpress.org/support/topic/request-only-replace-local-urls
-    $home_url = home_url();
-    $filter_fn = function( $link ) use ( $home_url ) {
-      if ( strpos( $link, $home_url ) === 0 ) {
+    // Check if WPML Multidomain is active : 
+    if (WPML_SUNRISE_MULTISITE_DOMAINS) {
+      // set home URLs as site urls
+
+      $sitepress_settings = get_option('icl_sitepress_settings');
+      $home_urls = $sitepress_settings['language_domains'];
+    } else {
+      // Get Home URL
+      $home_urls = array(home_url());
+    }
+
+    $filter_fn = function( $link ) use ($home_urls){
+      $rel = false;
+      foreach($home_urls as $home_url) {
+        if ( strpos( $link, $home_url ) === 0 ) {
+          $rel = true;
+        } 
+      }
+      if ($rel == true) {
         return wp_make_link_relative( $link );
       } else {
         return $link;
       }
+
+      
     };
 
     foreach ( $filters as $filter ) {
       add_filter( $filter, $filter_fn );
     }
   }
+
 ?>
