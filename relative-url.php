@@ -41,8 +41,8 @@ License: GPLv2 or later
     $filters = array(
       'bloginfo_url',
       //'the_permalink',
-      'wp_list_pages',
-      'wp_list_categories',
+      //'wp_list_pages',
+      //'wp_list_categories',
       'the_content_more_link',
       'the_tags',
       'the_author_posts_link',
@@ -50,22 +50,22 @@ License: GPLv2 or later
       //'post_type_link',  // Custom post type link
       //'page_link',       // Page link
       //'attachment_link', // Attachment link
-      'get_shortlink',   // Shortlink
-      'post_type_archive_link',    // Post type archive link
-      'get_pagenum_link',          // Paginated link
-      'get_comments_pagenum_link', // Paginated comment link
-      'term_link',   // Term link, including category, tag
-      'search_link', // Search link
-      'day_link',   // Date archive link
-      'month_link',
-      'year_link',
+      //'get_shortlink',   // Shortlink
+      //'post_type_archive_link',    // Post type archive link
+      //'get_pagenum_link',          // Paginated link
+      //'get_comments_pagenum_link', // Paginated comment link
+      //'term_link',   // Term link, including category, tag
+      //'search_link', // Search link
+      //'day_link',   // Date archive link
+      //'month_link',
+      //'year_link',
 
       // site location
-      'option_siteurl',
-      'blog_option_siteurl',
-      'option_home',
+      // 'option_siteurl',
+      // 'blog_option_siteurl',
+      // 'option_home',
       'admin_url',
-      'home_url',
+      // 'home_url',
       'includes_url',
       'site_url',
       'site_option_siteurl',
